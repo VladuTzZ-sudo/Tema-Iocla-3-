@@ -1,0 +1,92 @@
+Matei Vlad Cristian
+321 CC
+
+    In fiecare functie incerc sa salvez registrele si sa le restaurez la
+iesire, punandu-le pe stiva.
+    Am definit o serie de variabile , fiecare cu nume sugestiv pe care le
+folosesc in rezolvarea temei.
+    De asemenea, am incercat o cat mai mare modularizare a temei pentru o
+intelegere mai buna si mai ales pentru a putea apela recursiv parcurgerea
+arborelui.
+
+Functii folosite in cadrul temei:
+    :: iocla_atoi:
+        -   Setez variabila "cifra" cu 10.
+        -   Calculez lungimea sirului primit ca parametru.
+        -   Salvez valoarea in variabila "lengthStringAtoi".
+        -   Folosesc variabila "negative" pe post de steag pentru a 
+        controla semnul int-ului returnat.
+        -   Compar primul byte din string cu "-" si actualizez variabila
+        "negative" in functie de semn.
+        -   Copiez byte cu byte caracterele din string-ul primit ca
+        parametru in registrul eax.
+        -   Atunci cand accesez caracterul, realizez trecerea la valoarea
+        sa din int si apoi inmultesc baza ( eax ) cu 10 ( cifra ) si adun
+        valoarea cifrei.
+        -   Verific daca steag-ul "negative" a fost activat, daca da atunci
+        inmultesc numarul cu -1
+        -   Restaurez registrele.
+
+    :: createNode:
+        -   Salvez registrele.
+        -   Salvez in variabila "wordForStrtok" adresa sirului primit ca 
+        parametru.
+        -   Calculez lungimea sirului si o salvez in variabila 
+        "lengthForCreateNode".
+        -   Declar memorie pentru sir, de dimensiunea sirului.
+        -   Copiez caracter cu caracter sirul si le salvez de la adresa 
+        memoriei alocate.
+        -   Pun sirul pe stiva.
+        -   Declar memorie pentru nod.
+        -   Pun in [nod], valoarea salvata pe stiva, adica adresa sirului
+        -   [nod + 4], respectiv [nod + 8], cei doi copii devin NULL.
+        -   Adresa nodului se salveaza in registrul eax.
+        -   Restaurez registrele.
+
+    :: create_tree:
+        -   Salvez registrele.
+        -   Obtin urmatorul "cuvant" din sir cu strtok.
+        -   Apelez functia createNode pentru subsir-ul obtinut.
+        -   Pun in variabila "root" adresa arborelui.
+        -   Pana aici arborele reprezinta un singur NOD.
+        -   In while-ul LOOP_FOR_INPUT se va extrage subsir cu subsir din
+        string-ul primit ca parametru folosind functia strtok.
+        -   Folosesc variabila "vizitat" ca steag pentru parcurgerea 
+        arborelui.
+        -   Apelez functia parcurgere_arbore, care se plimba pe copac si 
+        insereaza nodul nou acolo unde este cazul.
+        -   Primul argument primit de functie este nodul Root ( ebx ), 
+        iar al doilea argument este substring-ul curent ( eax ).
+        -   Restaurez registrele.
+
+    :: parcurgere_arbore:
+        -   Salvez registrele.
+        -   Salvez in variabila "wordForGoThrough" string-ul 
+        primit ca argument.
+        -   Pe tot parcursul functiei salvez si pastrez in variabila 
+        "Node" adresa nod-ului curent.
+        -   Deoarece in recursivitate se poate ajung si pe nod-uri nule ,
+        acele noduri de tip copil ale unor frunze valide, atunci prima
+        conditie va fi sa verific daca nodul curent este diferit de NULL.
+        Daca nodul curent este NULL atunci ies din functie.
+        -   Intr-un arbore de acest tip, numerele trebuie sa fie mereu
+        frunze, ele nu pot avea copii. Astfel, la urmatorul pas verific
+        daca nodul curent poate fi un nod corect pentru a insera nodul nou 
+        (ca si copil al acestui Nod curent) in arbore. Nodul curent 
+        trebuie sa contina un simbol si verific acest lucru.
+        -   Verific daca lungimea string-ului din nodul curent este 1 si
+        daca este 1, verific daca caracterul are codul ascii mai mic decat
+        codul ascii al lui 0.
+        -   Apelez recursiv functie pentru copilul din stanga si apoi
+        pentru copilul din dreapta pentru a ajung la frunze.
+        -   Verific daca nodul meu a fost pus deja in arbore si folosesc
+        pentru acest lucru variabila "vizitat". Realizez acest lucru, 
+        deoarece este posibil ca in intoarcerea din recursivitate sa 
+        incerc din nou sa adaug nodul pe o pozitia din dreapta(de exemplu).
+        -   Verific daca copilul din stanga al nodului curent este NULL.
+        Daca este NULL, atunci inseamna ca pot insera acolo nodul nou.
+        -   Daca in stanga nu s-a putut insera nodul, verific daca copilul
+        din dreapta este NULL. Daca nu este NULL, inserez acolo.
+        -   Apelez functia createNode de string-ul dorit.
+        -   Setez variabila "vizitat" = 1.
+        -   Restaurez registrele.
